@@ -18,15 +18,15 @@ describe("chapter-one-reading-list", () => {
       systemProgram: web3.SystemProgram.programId,
     }
 
-    await program.methods.addArticle('Article 1', 'https://article1.example.com')
+    await program.methods.addArticle('https://article1.example.com')
       .accounts(accounts)
       .signers([article])
       .rpc();
 
     const articleAccount = await program.account.article.fetch(article.publicKey);
+    console.log(articleAccount);
 
     assert.equal(articleAccount.collector.toBase58(), program.provider.publicKey.toBase58());
-    assert.equal(articleAccount.title, 'Article 1');
     assert.equal(articleAccount.link, 'https://article1.example.com');
     assert.ok(articleAccount.timestamp);
   });
@@ -55,7 +55,7 @@ describe("chapter-one-reading-list", () => {
       systemProgram: web3.SystemProgram.programId,
     }
 
-    await program.methods.addArticle('Article 2', 'https://article2.example.com')
+    await program.methods.addArticle('https://article2.example.com')
       .accounts(accounts)
       .signers([article, otherUser])
       .rpc();
@@ -63,8 +63,14 @@ describe("chapter-one-reading-list", () => {
     const articleAccount = await program.account.article.fetch(article.publicKey);
 
     assert.equal(articleAccount.collector.toBase58(), otherUser.publicKey.toBase58());
-    assert.equal(articleAccount.title, 'Article 2');
     assert.equal(articleAccount.link, 'https://article2.example.com');
     assert.ok(articleAccount.timestamp);
+  });
+
+  it("can get all articles", async() => {
+    const articles = await program.account.article.all()
+
+    console.log(articles);
+
   });
 });
