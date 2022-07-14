@@ -1,13 +1,18 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+  <div class="container-fluid">
+    <h1>Home</h1>
+    <WalletMultiButton />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { WalletMultiButton, initWallet } from "solana-wallets-vue";
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
 
-export default defineComponent({
-  name: "HomeView",
-});
+const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
+
+initWallet({ wallets, autoConnect: true });
 </script>
