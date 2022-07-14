@@ -13,8 +13,17 @@ export default defineComponent({
     link: { type: String, required: true },
     apiURL: {
       type: String,
+      // TODO: replace this with own preview server
       default: "https://link-prevue-api-v2.herokuapp.com/preview/",
     },
+    collector: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    }
   },
   watch: {
     url: function () {
