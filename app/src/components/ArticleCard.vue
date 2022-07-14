@@ -1,4 +1,5 @@
 <script lang="ts">
+import { Article } from "@/models/Article";
 import { defineComponent } from "vue";
 
 interface LinkPreviewResponse {
@@ -10,20 +11,15 @@ interface LinkPreviewResponse {
 export default defineComponent({
   name: "ArticleCard",
   props: {
-    link: { type: String, required: true },
+    article: {
+      type: Article,
+      required: true,
+    },
     apiURL: {
       type: String,
       // TODO: replace this with own preview server
       default: "https://link-prevue-api-v2.herokuapp.com/preview/",
     },
-    collector: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    }
   },
   watch: {
     url: function () {
@@ -48,7 +44,7 @@ export default defineComponent({
       return this.validURL;
     },
     getLinkPreview() {
-      if (this.isValidURL(this.link)) {
+      if (this.isValidURL(this.article.link)) {
         this.httpRequest(
           (response: string) => {
             this.response = JSON.parse(response);
@@ -62,7 +58,7 @@ export default defineComponent({
     },
     httpRequest(success: CallableFunction, error: CallableFunction) {
       const http = new XMLHttpRequest();
-      const params = "url=" + this.link;
+      const params = "url=" + this.article.link;
       http.open("POST", this.apiURL, true);
       http.setRequestHeader(
         "Content-type",
@@ -87,9 +83,11 @@ export default defineComponent({
     <img class="card-img-top" :src="response.image" alt="Response Image" />
     <div class="card-body">
       <div class="card-title">
-        <h1>{{ response.title }}</h1>
+        <h1>{{ response.title || article.title }}</h1>
       </div>
       <div class="card-test">
+        <p>{{ article.created_ago }}</p>
+        <p>{{ article.added_date }}</p>
         <p>{{ response.description }}</p>
       </div>
     </div>
