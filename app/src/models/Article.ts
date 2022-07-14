@@ -1,7 +1,9 @@
-import dayjs from "dayjs";
-import "dayjs/plugin/relativeTime";
+import dayjs, { Dayjs } from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "@project-serum/anchor";
+
+dayjs.extend(relativeTime);
 
 
 interface AccountData {
@@ -14,14 +16,14 @@ interface AccountData {
 export class Article {
     publicKey: PublicKey;
     collector: PublicKey;
-    timestamp: string;
+    timestamp: Dayjs;
     link: string;
     title: string;
 
     constructor (publicKey: PublicKey, accountData: AccountData ) {
         this.publicKey = publicKey;
         this.collector = accountData.collector;
-        this.timestamp = accountData.timestamp.toString();
+        this.timestamp = dayjs.unix(parseInt(accountData.timestamp.toString()));
         this.link = accountData.link;
         this.title = accountData.title;
     }
@@ -36,10 +38,10 @@ export class Article {
     }
 
     get added_date () {
-        return dayjs.unix(+this.timestamp).format('lll')
+        return this.timestamp.format('MMM D, YYYY')
     }
 
     get created_ago () {
-        return dayjs.unix(+this.timestamp).fromNow()
+        return this.timestamp.fromNow()
     }
 }
