@@ -2,7 +2,8 @@
   <div class="container-fluid">
     <h1>Home</h1>
     <WalletMultiButton />
-    <div v-if="workspace.wallet.value">Wallet connected!</div>
+    <div v-if="workspace.wallet.value"><ArticleGrid /></div>
+    
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import {
 } from "@solana/wallet-adapter-wallets";
 
 import { initWorkspace, useWorkspace, Workspace } from "@/composables";
+import ArticleGrid from "@/components/ArticleGrid.vue";
 
 const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
 
