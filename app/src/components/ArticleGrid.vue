@@ -4,21 +4,25 @@
       Loading...
     </div>
     <div v-else class="row">
-      <div v-for="article in articles" :key="article.publicKey.toBase58()">
-        <ArticleCard :link="article.link" :title="article.title" :collector="article.collector_display" />
+      <div v-for="article in sortedArticles" :key="article.publicKey.toBase58()">
+        <ArticleCard :article="article" />
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import {Ref, ref} from "vue";
+import {Ref, ref, ComputedRef, computed} from "vue";
 import {Article}  from "@/models/Article";
 import { fetchArticles } from "@/api";
 import ArticleCard from "./ArticleCard.vue";
 
 const articles: Ref<Article[]> = ref([]);
 const loading: Ref<boolean> = ref(true);
+
+const sortedArticles: ComputedRef<Article[]> = computed(() => {
+  return articles.value.slice(0).sort((a, b) => b.timestamp.millisecond() - a.timestamp.millisecond());
+})
 
 fetchArticles().then(fetchedArticles => articles.value = fetchedArticles).finally(() => loading.value = false)
 
