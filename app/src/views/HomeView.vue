@@ -2,7 +2,10 @@
   <div class="container-fluid">
     <h1>Home</h1>
     <WalletMultiButton />
-    <div v-if="workspace.wallet.value"><ArticleGrid /></div>
+    <div v-if="workspace.wallet.value">
+      <AddArticleForm />
+      <ArticleGrid />
+    </div>
     
   </div>
 </template>
@@ -16,6 +19,7 @@ import {
 
 import { initWorkspace, useWorkspace, Workspace } from "@/composables";
 import ArticleGrid from "@/components/ArticleGrid.vue";
+import AddArticleForm from "@/components/AddArticleForm.vue";
 
 const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
 
