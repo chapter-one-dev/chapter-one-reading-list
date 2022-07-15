@@ -27,6 +27,22 @@ export type ChapterOneReadingList = {
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "deleteArticle",
+      "accounts": [
+        {
+          "name": "article",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "collector",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -94,6 +110,22 @@ export const IDL: ChapterOneReadingList = {
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "deleteArticle",
+      "accounts": [
+        {
+          "name": "article",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "collector",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
