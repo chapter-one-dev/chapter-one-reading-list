@@ -80,6 +80,7 @@ pub struct InitializeArticle<'info> {
 pub struct DeleteArticle<'info> {
     #[account(mut, has_one = collector, close = collector)]
     pub article: Account<'info, Article>,
+    #[account(mut)]
     pub collector: Signer<'info>,
 }
 
