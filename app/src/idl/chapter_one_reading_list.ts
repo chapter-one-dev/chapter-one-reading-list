@@ -38,7 +38,7 @@ export type ChapterOneReadingList = {
         },
         {
           "name": "collector",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true
         }
       ],
@@ -121,7 +121,7 @@ export const IDL: ChapterOneReadingList = {
         },
         {
           "name": "collector",
-          "isMut": false,
+          "isMut": true,
           "isSigner": true
         }
       ],
