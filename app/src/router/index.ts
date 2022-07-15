@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.VUE_APP_ROOT_PATH),
   routes,
 });
 
