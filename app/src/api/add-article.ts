@@ -2,12 +2,12 @@ import { useWorkspace } from "@/composables";
 import { Article } from "@/models/Article";
 import { web3 } from "@project-serum/anchor";
 
-export async function addArticle(title: string, link: string) {
+export async function addArticle(link: string) {
   const {wallet, program} = useWorkspace();
 
   const article = web3.Keypair.generate();
 
-  await program.value.methods.addArticle(title, link).accounts({
+  await program.value.methods.addArticle(link).accounts({
     collector: wallet.value?.publicKey,
     article: article.publicKey,
     systemProgram: web3.SystemProgram.programId,

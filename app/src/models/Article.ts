@@ -10,7 +10,6 @@ interface AccountData {
     collector: PublicKey;
     timestamp: BN;
     link: string;
-    title: string;
 }
 
 export class Article {
@@ -18,14 +17,12 @@ export class Article {
     collector: PublicKey;
     timestamp: Dayjs;
     link: string;
-    title: string;
 
     constructor (publicKey: PublicKey, accountData: AccountData ) {
         this.publicKey = publicKey;
         this.collector = accountData.collector;
         this.timestamp = dayjs.unix(parseInt(accountData.timestamp.toString()));
         this.link = accountData.link;
-        this.title = accountData.title;
     }
 
     get key () {
