@@ -36,7 +36,40 @@ export default defineComponent({
       validURL: false,
     };
   },
+  computed: {
+    altImage() {
+      if (this.response && !this.response.image) {
+        if (this.link.includes("https://twitter.com")) {
+          return "twitter";
+        } else {
+          return "";
+        }
+      } else {
+        return undefined;
+      }
+    },
+    altTitle() {
+      if (this.response && !this.response.image) {
+        if (this.link.includes("https://twitter.com")) {
+          return "twitter";
+        } else {
+          return "";
+        }
+      } else {
+        return undefined;
+      }
+    }
+  },
   methods: {
+    getTwitterHandle(twitterUrl: string): string {
+      const removedDomain = twitterUrl.slice("https://twitter.com/".length);
+      
+
+      const splitOnSlash = removedDomain.split("/");
+
+      return splitOnSlash[0];
+
+    },
     checkValidURL(url: string): boolean {
       this.validURL = isValidURL(url);
       return this.validURL;
@@ -78,10 +111,14 @@ export default defineComponent({
 
 <template>
   <div class="card-body" v-if="response && validURL">
-    <img class="card-img-top" :src="response.image" :alt="response.title" />
+    <img v-if="response.image" class="card-img-top" :src="response.image" :alt="response.title" />
+    <img v-else-if="altImage == 'twitter'" class="card-img-top" src="@/assets/twitter-logo.png" alt="Twitter Article" />
     <div class="card-body">
-      <h1 class="card-title">{{ response.title }}</h1>
-      <p class="card-text">{{ response.description }}</p>
+      <h1 class="card-title" v-if="response.title">{{ response.title }}</h1>
+      <h1 class="card-title" v-else-if="altTitle === 'twitter'">Thread by @{{getTwitterHandle(link)}}</h1>
+      <h1 class="card-title" v-else>{{link}}</h1>
+      <p class="card-text" v-if="response.description">{{ response.description }}</p>
     </div>
   </div>
+  <div v-else>Loading Preview</div>
 </template>
