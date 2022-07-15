@@ -35,6 +35,10 @@ pub mod chapter_one_reading_list {
         article.link = trimmed_link;
         Ok(())
     }
+
+    pub fn delete_article(_ctx: Context<DeleteArticle>) -> Result<()> {
+        Ok(())
+    }
 }
 
 #[account]
@@ -70,6 +74,13 @@ pub struct InitializeArticle<'info> {
     #[account(mut)]
     pub collector: Signer<'info>,
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct DeleteArticle<'info> {
+    #[account(mut, has_one = collector, close = collector)]
+    pub article: Account<'info, Article>,
+    pub collector: Signer<'info>,
 }
 
 #[error_code]
