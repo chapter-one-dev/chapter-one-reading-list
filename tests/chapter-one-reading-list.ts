@@ -73,4 +73,64 @@ describe("chapter-one-reading-list", () => {
     console.log(articles);
 
   });
+
+  
+  it('can delete an article', async () => {
+    const article: web3.Keypair = web3.Keypair.generate();
+    
+    const accounts: Accounts = {
+      article: article.publicKey,
+      collector: program.provider.publicKey,
+      systemProgram: web3.SystemProgram.programId,
+    }
+    
+    await program.methods.addArticle('https://article3.example.com')
+    .accounts(accounts)
+    .signers([article])
+    .rpc();
+    
+    await program.methods.deleteArticle().accounts(accounts).rpc();
+    
+    const articleAccount = await program.account.article.fetchNullable(article.publicKey);
+    
+    assert.ok(articleAccount === null);
+    
+  });
+
+  it('cannot delete an other user\'s article', async () => {
+    // set up otherUser account
+    const otherUser: web3.Keypair = anchor.web3.Keypair.generate();
+    // request money for other user
+    const signature: string = await program.provider.connection.requestAirdrop(otherUser.publicKey, 1000000000);
+
+    const latestBlockhash = await program.provider.connection.getLatestBlockhash();
+
+    const confirmationStrategy: web3.BlockheightBasedTransactionConfirmationStrategy = {
+      blockhash: latestBlockhash.blockhash,
+      lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      signature,
+    }
+    
+    await program.provider.connection.confirmTransaction(confirmationStrategy);
+    const article: web3.Keypair = web3.Keypair.generate();
+
+    const accounts: Accounts = {
+      article: article.publicKey,
+      collector: otherUser.publicKey,
+      systemProgram: web3.SystemProgram.programId,
+    }
+
+    await program.methods.addArticle('https://article4.example.com')
+      .accounts(accounts)
+      .signers([article, otherUser])
+      .rpc();
+
+    try {
+      await program.methods.deleteArticle().accounts(accounts).rpc();
+      assert.fail("Could delete other user's article.")
+    } catch (error) {
+      const articleAccount = await program.account.article.fetch(article.publicKey);
+      assert.equal(articleAccount.link, 'https://article4.example.com');
+    }
+  });
 });
