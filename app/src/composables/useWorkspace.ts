@@ -20,8 +20,6 @@ export interface Workspace {
 }
 
 
-// export const useWorkspace = () => workspace;
-
 export function useWorkspace(): Workspace {
   return workspace;
 }
