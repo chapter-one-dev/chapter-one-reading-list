@@ -1,10 +1,8 @@
 <template>
   <section class="container">
-    <div v-if="loading" class="row">
-      Loading...
-    </div>
+    <div v-if="loading">Loading articles...</div>
     <div v-else class="row">
-      <div v-for="article in sortedArticles" :key="article.publicKey.toBase58()">
+      <div v-for="article in sortedArticles" :key="article.publicKey.toBase58()" class="col-md-4">
         <ArticleCard :article="article" />
       </div>
     </div>
@@ -12,18 +10,22 @@
 </template>
 
 <script setup lang="ts">
-import {Ref, ref, ComputedRef, computed} from "vue";
+import {ComputedRef, computed, ref} from "vue";
+import { useStore } from "vuex";
 import {Article}  from "@/models/Article";
-import { fetchArticles } from "@/api";
 import ArticleCard from "./ArticleCard.vue";
 
-const articles: Ref<Article[]> = ref([]);
-const loading: Ref<boolean> = ref(true);
+const store = useStore();
+
+const loading = ref(true);
+
+store.dispatch('loadArticles').finally(() => loading.value = false);
 
 const sortedArticles: ComputedRef<Article[]> = computed(() => {
-  return articles.value.slice(0).sort((a, b) => b.timestamp.millisecond() - a.timestamp.millisecond());
-})
+  const articles: Article[] = store.getters.getArticles;
+  console.log(articles);
 
-fetchArticles().then(fetchedArticles => articles.value = fetchedArticles).finally(() => loading.value = false)
+  return articles.slice(0).sort((a, b) => b.timestamp.millisecond() - a.timestamp.millisecond());
+})
 
 </script>
