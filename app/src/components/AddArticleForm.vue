@@ -1,16 +1,20 @@
 <template>
-  <form>
+<div class="container">
+  <form class="col m-5">
     <div class="input-group flex-nowrap">
       <label for="link" class="input-group-text">Link</label>
-      <input id="link" class="form-control" placeholder="https://twitter.com/yb_effect/status/1521609803600044032" v-model="link" />
+      <input id="link" class="form-control" placeholder="https://mirror.xyz/" v-model="link" />
     </div>
-    <button class="btn btn-primary" @click.prevent="add">Add Article</button>
-    <button v-if="!showPreview" class="btn btn-secondary" @click.prevent="togglePreview" :disabled="!validLink">Show Preview</button>
-    <button v-else class="btn btn-secondary" @click.prevent="togglePreview">Hide Preview</button>
+    <div class="row">
+      <button class="btn btn-primary col m-2" @click.prevent="add">Add Article</button>
+      <button v-if="!showPreview" class="btn btn-secondary col m-2" @click.prevent="togglePreview" :disabled="!validLink">Show Preview</button>
+      <button v-else class="btn btn-secondary col m-2" @click.prevent="togglePreview">Hide Preview</button>
+    </div>
   </form>
-  <aside v-if="showPreview">
+  <aside v-if="showPreview" class="col-4">
     <LinkPreview :link="link" />
   </aside>
+</div>
 </template>
 
 <script setup lang="ts">
