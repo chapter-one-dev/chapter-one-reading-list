@@ -22,6 +22,9 @@ import {ref, computed} from "vue";
 import { addArticle } from '@/api/add-article';
 import LinkPreview from './LinkPreview.vue';
 import { isValidURL } from "@/composables";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const link = ref("");
 const showPreview = ref(false);
@@ -32,7 +35,7 @@ const validLink = computed(() => {
 async function add() {
   const article = await addArticle(link.value);
   link.value = "";
-  console.log(article);
+  store.commit('addArticle', article);
 }
 
 function togglePreview() {

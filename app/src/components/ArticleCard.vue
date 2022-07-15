@@ -3,6 +3,7 @@ import { Article } from "@/models/Article";
 import { defineComponent } from "vue";
 import LinkPreview from "./LinkPreview.vue";
 import { deleteArticle } from "@/api/delete-article";
+import { mapMutations } from "vuex";
 
 export default defineComponent({
   name: "ArticleCard",
@@ -18,8 +19,10 @@ export default defineComponent({
   methods: {
     async deleteThisArticle() {
       const deleted = await deleteArticle(this.article);
+      this.remove(this.article);
       return deleted;
-    }
+    },
+    ...mapMutations({remove: 'deleteArticle'})
   }
 
 });
