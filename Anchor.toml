@@ -10,7 +10,7 @@ chapter_one_reading_list = "2Nn7j2iepkGYBXaRgiq5fHvkqLS9rvMvSBNpGHBavHgu"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/Users/jdunn/.config/solana/id.json"
 
 [scripts]
