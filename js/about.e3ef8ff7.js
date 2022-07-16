@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["about"],{d7a9:function(n,t,e){"use strict";e.r(t);var a=e("7a23");const o=Object(a["h"])("h1",null,"About this site",-1),r=Object(a["h"])("p",null,"Jared Dunn, an intern at Chapter One, built this for Chapter One's first Moonshot week.",-1);function s(n,t){return Object(a["A"])(),Object(a["g"])(a["a"],null,[o,r],64)}var u=e("6b0d"),c=e.n(u);const i={},b=c()(i,[["render",s]]);t["default"]=b}}]);
+//# sourceMappingURL=about.e3ef8ff7.js.map
