@@ -13,11 +13,26 @@
             <router-link to="/" class="nav-link">Home</router-link>
             <router-link to="/about" class="nav-link">About</router-link>
           </div>
-          <div class="d-none d-md-flex"><WalletMultiButton /></div>
+          <div class="d-none d-md-flex">
+            <span class="position-absolute z-100 top-0 bg-danger rounded-circle px-2 wallet-alert" 
+              :class="{'invisible': hasPermission}"
+              data-bs-toggle="tooltip" data-bs-placement="left" title="You can't add articles to the reading list">
+              <i class="fa-regular fa-exclamation"></i>
+            </span>
+            <WalletMultiButton />
+          </div>
         </div>
       </div>
     </nav>
-    <div class="d-md-none"><WalletMultiButton /></div>
+    <div class="d-md-none">
+      <span class="position-absolute bg-danger rounded-circle px-2 wallet-alert"
+        :class="{'invisible': hasPermission}"
+        style="top: 3rem; left: 8.5rem;"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="You can't add articles to the reading list">
+        <i class="fa-regular fa-exclamation"></i>
+      </span>
+      <WalletMultiButton />
+    </div>
   </header>
   <main class="container-fluid">
     <router-view />
@@ -31,22 +46,44 @@
   </footer>
 </template>
 
+<style>
+.wallet-alert {
+  z-index: 1000;
+}
+</style>
+
 <script setup lang="ts">
+import { computed, onMounted } from "vue";
 import dayjs from "dayjs";
+import {Tooltip} from "bootstrap";
 import { WalletMultiButton, initWallet } from "solana-wallets-vue";
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 
-import { initWorkspace } from "@/composables";
-import { ref } from "vue";
+import { initWorkspace, useWorkspace, canWrite } from "@/composables";
 
 const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
-
 initWallet({ wallets, autoConnect: true });
 initWorkspace();
+const { wallet } = useWorkspace();
+const hasPermission = computed(() => {
+  return (wallet && wallet.value) ? canWrite(wallet.value) : false;
+});
 
 const currentYear = dayjs().year();
+
+onMounted(() => {
+  if (!hasPermission.value) {
+    const triggerList = document.querySelectorAll(".wallet-alert");
+    console.log(triggerList);
+    const tooltipList = [...triggerList].map(trigger => Tooltip.getOrCreateInstance(trigger));
+  }
+});
+
+
+
+
 
 </script>
