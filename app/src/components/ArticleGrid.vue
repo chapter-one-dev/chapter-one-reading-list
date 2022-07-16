@@ -1,7 +1,7 @@
 <template>
-  <section class="container">
+  <section class="container mt-4">
     <div v-if="loading">Loading articles...</div>
-    <div v-else class="row">
+    <div v-else class="row justify-content-evenly">
       <div v-for="article in sortedArticles" :key="article.publicKey.toBase58()" class="col-md-4">
         <ArticleCard :article="article" />
       </div>
