@@ -114,9 +114,9 @@ export default defineComponent({
     <img v-if="response.image" class="card-img-top" :src="response.image" :alt="response.title" />
     <img v-else-if="altImage == 'twitter'" class="card-img-top" src="@/assets/twitter-logo.png" alt="Twitter Article" />
     <div class="card-body">
-      <h1 class="card-title" v-if="response.title">{{ response.title }}</h1>
-      <h1 class="card-title" v-else-if="altTitle === 'twitter'">Thread by @{{getTwitterHandle(link)}}</h1>
-      <h1 class="card-title" v-else>{{link}}</h1>
+      <h3 class="card-title" v-if="response.title">{{ response.title }}</h3>
+      <h3 class="card-title" v-else-if="altTitle === 'twitter'">Thread by @{{getTwitterHandle(link)}}</h3>
+      <h3 class="card-title" v-else>{{link}}</h3>
       <p class="card-text" v-if="response.description">{{ response.description }}</p>
     </div>
   </div>
